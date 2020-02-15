@@ -23,7 +23,7 @@ func Convert(in string) error {
 		"-map", "0:3?",
 		"-map", "0:4?",
 		"-map", "0:5?",
-		"-map", "0:7?",
+		"-map", "0:6?",
 		"-c:v", "copy",
 		"-c:a:0", "copy",
 		"-c:a:1", "copy",

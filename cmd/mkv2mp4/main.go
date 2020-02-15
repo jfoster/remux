@@ -13,41 +13,44 @@ import (
 
 func main() {
 	flag.Parse()
-	args := flag.Args()
 
 	// check for ffmpeg
 	if _, err := exec.LookPath("ffmpeg"); err != nil {
-		log.Fatal(err)
+		log.Fatalln("ffmpeg not found", err)
 	}
+
+	paths := flag.Args()
 
 	var files []string
 
-	if len(args) > 0 {
-		for _, v := range args {
-			if isMkv(v) {
-				files = append(files, v)
-			}
-		}
-	} else {
+	if len(paths) < 1 {
 		dir, err := os.Getwd()
 		if err != nil {
 			log.Print(err)
 		}
-		fmt.Println(dir)
+		paths[0] = dir
+	}
 
-		err = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-			if isMkv(path) {
-				files = append(files, path)
+	for _, path := range paths {
+		if isDir(path) {
+			err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+				if isMkv(path) {
+					files = append(files, path)
+				}
+				return nil
+			})
+			if err != nil {
+				log.Panic(err)
 			}
-			return nil
-		})
-		if err != nil {
-			log.Panic(err)
+		} else if isMkv(path) {
+			files = append(files, path)
 		}
 	}
 
-	for _, in := range files {
-		convert(in)
+	fmt.Println(files)
+
+	for _, file := range files {
+		convert(file)
 	}
 }
 
@@ -61,6 +64,13 @@ func convert(in string) {
 	}
 }
 
-func isMkv(in string) bool {
-	return filepath.Ext(in) == ".mkv"
+func isMkv(path string) bool {
+	return filepath.Ext(path) == ".mkv"
+}
+
+func isDir(path string) bool {
+	if stat, err := os.Stat(path); !os.IsNotExist(err) {
+		return stat.IsDir()
+	}
+	return false
 }
