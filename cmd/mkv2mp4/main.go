@@ -22,7 +22,7 @@ func main() {
 
 	var files []string
 
-	if flag.NArg() > 0 {
+	if len(args) > 0 {
 		for _, v := range args {
 			if isMkv(v) {
 				files = append(files, v)
