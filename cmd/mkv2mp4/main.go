@@ -28,7 +28,7 @@ func main() {
 		if err != nil {
 			log.Print(err)
 		}
-		paths[0] = dir
+		paths = []string{dir}
 	}
 
 	for _, path := range paths {
