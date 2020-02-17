@@ -2,10 +2,12 @@ package mkv2mp4
 
 import (
 	"errors"
-	"os/exec"
+	"fmt"
 	"path"
 	"path/filepath"
 	"strings"
+
+	"github.com/jfoster/goffmpeg/transcoder"
 )
 
 func Convert(in string) error {
@@ -14,14 +16,24 @@ func Convert(in string) error {
 	}
 	out := trimExt(in) + ".mp4"
 
-	cmd := exec.Command("ffmpeg",
-		"-y",
-		"-i", in,
-		"-map", "0",
-		"-c", "copy",
-		out,
-	)
-	return cmd.Run()
+	trans := new(transcoder.Transcoder)
+
+	if err := trans.Initialize(in, out); err != nil {
+		return err
+	}
+
+	trans.MediaFile().SetStreamMap("0")
+	trans.MediaFile().SetAudioCodec("copy")
+	trans.MediaFile().SetVideoCodec("copy")
+
+	done := trans.Run(true)
+
+	progress := trans.Output()
+	for msg := range progress {
+		fmt.Println(msg)
+	}
+
+	return <-done
 }
 
 func trimExt(p string) string {
