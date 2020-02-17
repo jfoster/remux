@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -47,30 +46,15 @@ func main() {
 		}
 	}
 
-	fmt.Println(files)
-
 	for _, file := range files {
 		convert(file)
 	}
 }
 
 func convert(in string) {
-	fmt.Println("started converting", in)
 	if err := mkv2mp4.Convert(in); err == nil {
-		fmt.Println("finished converting", in)
 		os.Remove(in)
 	} else {
 		log.Print(err)
 	}
-}
-
-func isMkv(path string) bool {
-	return filepath.Ext(path) == ".mkv"
-}
-
-func isDir(path string) bool {
-	if stat, err := os.Stat(path); !os.IsNotExist(err) {
-		return stat.IsDir()
-	}
-	return false
 }

@@ -2,12 +2,15 @@ package mkv2mp4
 
 import (
 	"errors"
-	"fmt"
-	"path"
+	"os"
 	"path/filepath"
-	"strings"
 
+	"github.com/cheggaaa/pb/v3"
 	"github.com/jfoster/goffmpeg/transcoder"
+)
+
+const (
+	FFTemplate pb.ProgressBarTemplate = `{{string . "file"}} {{bar .}} {{percent .}} {{string . "time"}} {{string . "bitrate"}}`
 )
 
 func Convert(in string) error {
@@ -29,13 +32,22 @@ func Convert(in string) error {
 	done := trans.Run(true)
 
 	progress := trans.Output()
-	for msg := range progress {
-		fmt.Println(msg)
+
+	bar := pb.New(10000)
+
+	bar.SetTemplate(FFTemplate)
+	bar.SetWriter(os.Stdout)
+
+	bar.Start()
+
+	for prog := range progress {
+		bar.SetCurrent(int64(prog.Progress * 100.0))
+		bar.Set("file", filepath.Base(in))
+		bar.Set("time", prog.CurrentTime)
+		bar.Set("bitrate", prog.CurrentBitrate)
 	}
 
-	return <-done
-}
+	bar.SetCurrent(10000).Finish()
 
-func trimExt(p string) string {
-	return strings.TrimSuffix(p, path.Ext(p))
+	return <-done
 }
