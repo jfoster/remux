@@ -6,15 +6,15 @@ import (
 	"strings"
 )
 
-func trimExt(p string) string {
+func TrimExt(p string) string {
 	return strings.TrimSuffix(p, filepath.Ext(p))
 }
 
-func isMkv(path string) bool {
+func IsMkv(path string) bool {
 	return filepath.Ext(path) == ".mkv"
 }
 
-func isDir(path string) bool {
+func IsDir(path string) bool {
 	if stat, err := os.Stat(path); !os.IsNotExist(err) {
 		return stat.IsDir()
 	}

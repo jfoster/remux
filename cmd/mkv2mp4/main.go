@@ -31,9 +31,9 @@ func main() {
 	}
 
 	for _, path := range paths {
-		if isDir(path) {
+		if mkv2mp4.IsDir(path) {
 			err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
-				if isMkv(path) {
+				if mkv2mp4.IsMkv(path) {
 					files = append(files, path)
 				}
 				return nil
@@ -41,7 +41,7 @@ func main() {
 			if err != nil {
 				log.Panic(err)
 			}
-		} else if isMkv(path) {
+		} else if mkv2mp4.IsMkv(path) {
 			files = append(files, path)
 		}
 	}

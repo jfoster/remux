@@ -17,7 +17,7 @@ func Convert(in string) error {
 	if filepath.Ext(in) != ".mkv" {
 		return errors.New("input file is not an mkv")
 	}
-	out := trimExt(in) + ".mp4"
+	out := TrimExt(in) + ".mp4"
 
 	trans := new(transcoder.Transcoder)
 
