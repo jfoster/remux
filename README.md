@@ -1,5 +1,7 @@
 # mkv2mp4
 
+cli util to convert a .mkv video file to a .mp4
+
 ### Dependencies
 
 * [FFmpeg](https://www.ffmpeg.org/)
