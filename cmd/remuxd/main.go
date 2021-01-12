@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/jfoster/mkv2mp4"
+	"github.com/jfoster/remux/internal/remux"
 	"github.com/radovskyb/watcher"
 )
 
@@ -32,7 +32,7 @@ func main() {
 				log.Println("error:", err)
 			case <-timer.C:
 				fmt.Println("timer stopped")
-				go convert(file)
+				go remux.Convert(file)
 			}
 
 			timer.Stop()
@@ -54,11 +54,5 @@ func main() {
 
 	if err := w.Start(time.Nanosecond); err != nil {
 		log.Fatal(err)
-	}
-}
-
-func convert(in string) {
-	if err := mkv2mp4.Convert(in); err == nil {
-		os.Remove(in)
 	}
 }

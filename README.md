@@ -1,6 +1,5 @@
-# mkv2mp4
-
-cli util to convert a .mkv video file to a .mp4
+# remux
+===
 
 ### Dependencies
 
@@ -9,5 +8,5 @@ cli util to convert a .mkv video file to a .mp4
 ### Usage
 
 ```
-./mkv2mp4 <path/to/mkv/file.mkv>
+./remux <path/to/mkv/file.mkv>
 ```
