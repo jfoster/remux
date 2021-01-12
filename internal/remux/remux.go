@@ -53,15 +53,20 @@ func Mkv2mp4(in string) (<-chan transcoder.Progress, error) {
 
 	format := "mp4"
 	overwrite := true
+	codec := "copy"
 
 	args := map[string]interface{}{"map": 0}
 	opts := ffmpeg.Options{
+		VideoCodec:   &codec,
+		AudioCodec:   &codec,
 		OutputFormat: &format,
 		Overwrite:    &overwrite,
 		ExtraArgs:    args,
 	}
 
 	cfg := &ffmpeg.Config{
+		FfmpegBinPath:   "ffmpeg",
+		FfprobeBinPath:  "ffprobe",
 		ProgressEnabled: true,
 	}
 
