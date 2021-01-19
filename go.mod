@@ -11,3 +11,5 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	golang.org/x/sys v0.0.0-20210110051926-789bb1bd4061 // indirect
 )
+
+replace github.com/floostack/transcoder => github.com/FlameInTheDark/transcoder v1.1.2-0.20201229082249-e61a87438e16

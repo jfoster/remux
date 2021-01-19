@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/jfoster/remux/internal/remux"
+	"github.com/jfoster/remux/internal/ui"
 	"github.com/radovskyb/watcher"
 )
 
@@ -32,7 +32,7 @@ func main() {
 				log.Println("error:", err)
 			case <-timer.C:
 				fmt.Println("timer stopped")
-				go remux.Convert(file)
+				go ui.Copy2mp4(file)
 			}
 
 			timer.Stop()
